@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>¬noise</title>
+    <meta name="description" content="Ryæn — projects and links. ¬noise." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%CF%81%3C/text%3E%3C/svg%3E" />
+    <style>
+      :root {
+        --bg: #05070c;
+        --panel: rgba(10, 14, 24, 0.55);
+        --panel2: rgba(10, 14, 24, 0.35);
+        --text: rgba(240, 248, 255, 0.92);
+        --muted: rgba(240, 248, 255, 0.62);
+
+        /* theme: teal + violet + electric */
+        --a: #2ef2ff;
+        --b: #b06cff;
+        --c: #45ffb1;
+
+        --border: rgba(46, 242, 255, 0.22);
+        --shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+
+        --radius: 18px;
+        --radius2: 22px;
+
+        --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        height: 100%;
+      }
+      body {
+        margin: 0;
+        background: radial-gradient(1200px 900px at 20% 20%, rgba(176, 108, 255, 0.15), transparent 55%), radial-gradient(900px 700px at 70% 25%, rgba(46, 242, 255, 0.12), transparent 58%), radial-gradient(900px 700px at 50% 90%, rgba(69, 255, 177, 0.1), transparent 60%), linear-gradient(180deg, #04060b 0%, #05070c 60%, #03040a 100%);
+        color: var(--text);
+        font-family: var(--sans);
+        overflow-x: hidden;
+      }
+
+      /* If you want to use your banner background image, uncomment and set URL:
+      body::before { background-image: url('banner.png'); opacity:.22; ... }
+    */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: radial-gradient(700px 380px at 50% 55%, rgba(46, 242, 255, 0.12), transparent 70%), radial-gradient(760px 420px at 50% 55%, rgba(176, 108, 255, 0.1), transparent 72%), linear-gradient(90deg, rgba(46, 242, 255, 0.08), rgba(176, 108, 255, 0.08));
+        opacity: 0.55;
+        pointer-events: none;
+        mix-blend-mode: screen;
+        filter: blur(0.2px);
+      }
+
+      /* subtle scanlines */
+      .scanlines {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(to bottom, rgba(255, 255, 255, 0.02), rgba(255, 255, 255, 0.02) 1px, rgba(0, 0, 0, 0) 3px, rgba(0, 0, 0, 0) 6px);
+        opacity: 0.15;
+        mix-blend-mode: overlay;
+      }
+
+      /* top “glow rail” */
+      .rail {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, rgba(46, 242, 255, 0.9), rgba(176, 108, 255, 0.9), transparent);
+        filter: drop-shadow(0 0 14px rgba(46, 242, 255, 0.7));
+        opacity: 0.85;
+        pointer-events: none;
+      }
+
+      .wrap {
+        min-height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 48px 20px;
+        position: relative;
+        isolation: isolate;
+      }
+
+      .grid {
+        width: min(1080px, 100%);
+        display: grid;
+        gap: 18px;
+        grid-template-columns: 1.15fr 0.85fr;
+      }
+      @media (max-width: 900px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .card {
+        background: linear-gradient(180deg, var(--panel), var(--panel2));
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-color: rgba(255, 255, 255, 0.06);
+        border-radius: var(--radius2);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        overflow: hidden;
+        position: relative;
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: -2px;
+        background: radial-gradient(520px 240px at 20% 10%, rgba(46, 242, 255, 0.2), transparent 60%), radial-gradient(520px 240px at 80% 10%, rgba(176, 108, 255, 0.18), transparent 60%), radial-gradient(520px 240px at 50% 110%, rgba(69, 255, 177, 0.14), transparent 60%);
+        opacity: 0.45;
+        pointer-events: none;
+      }
+
+      .inner {
+        position: relative;
+        padding: 26px;
+      }
+
+      .kicker {
+        font-family: var(--mono);
+        color: var(--muted);
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        font-size: 12px;
+        margin: 0 0 10px 0;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 10px;
+      }
+
+      .logo {
+        width: 75px;
+        height: 75px;
+        border-radius: 16px;
+        border: 1px solid rgba(46, 242, 255, 0.22);
+
+        /* 👇 set your avatar image here */
+        background-image: url("logo.png");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+
+        box-shadow:
+          0 0 0 1px rgba(176, 108, 255, 0.1) inset,
+          0 14px 38px rgba(0, 0, 0, 0.35),
+          0 0 22px rgba(46, 242, 255, 0.35);
+
+        position: relative;
+        overflow: hidden;
+      }
+
+      .logo::after {
+        content: "";
+        position: absolute;
+        inset: -40%;
+        background: linear-gradient(90deg, transparent, rgba(46, 242, 255, 0.55), transparent);
+        transform: rotate(18deg);
+        animation: sheen 5.2s linear infinite;
+        opacity: 0.35;
+        pointer-events: none;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(32px, 4.8vw, 54px);
+        line-height: 1;
+        letter-spacing: -0.02em;
+      }
+
+      .sub {
+        margin: 8px 0 0 0;
+        color: var(--muted);
+        font-size: 14px;
+        font-family: var(--mono);
+      }
+
+      .tagline {
+        margin-top: 18px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 14px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        background: rgba(0, 0, 0, 0.18);
+        width: fit-content;
+      }
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 99px;
+        background: radial-gradient(circle at 30% 30%, var(--a), var(--b));
+        box-shadow: 0 0 18px rgba(46, 242, 255, 0.35);
+      }
+      .tagline span {
+        font-family: var(--mono);
+        color: rgba(240, 248, 255, 0.8);
+        font-size: 13px;
+      }
+
+      .links {
+        margin-top: 18px;
+        display: grid;
+        gap: 10px;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      @media (max-width: 520px) {
+        .links {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      .link {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 14px 14px;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        background: rgba(0, 0, 0, 0.16);
+        text-decoration: none;
+        color: var(--text);
+        transition:
+          transform 0.15s ease,
+          border-color 0.15s ease,
+          background 0.15s ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .link:hover {
+        transform: translateY(-2px);
+        border-color: rgba(46, 242, 255, 0.25);
+        background: rgba(0, 0, 0, 0.22);
+      }
+      .link:active {
+        transform: translateY(0px);
+      }
+
+      .link .left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        min-width: 0;
+      }
+      .glyph {
+        width: 38px;
+        height: 38px;
+        border-radius: 14px;
+        border: 1px solid rgba(46, 242, 255, 0.15);
+        background: linear-gradient(135deg, rgba(46, 242, 255, 0.16), rgba(176, 108, 255, 0.14));
+        display: grid;
+        place-items: center;
+        font-family: var(--mono);
+        color: rgba(240, 248, 255, 0.9);
+        box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.04) inset;
+        flex: 0 0 auto;
+      }
+      .meta {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+      .meta strong {
+        font-size: 14px;
+        letter-spacing: 0.01em;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .meta small {
+        font-family: var(--mono);
+        color: var(--muted);
+        font-size: 12px;
+        margin-top: 2px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .arrow {
+        font-family: var(--mono);
+        color: rgba(240, 248, 255, 0.65);
+        flex: 0 0 auto;
+      }
+
+      .side {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .panelTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+      .panelTitle h2 {
+        margin: 0;
+        font-size: 14px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: rgba(240, 248, 255, 0.78);
+        font-family: var(--mono);
+      }
+      .pill {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: rgba(240, 248, 255, 0.72);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: rgba(0, 0, 0, 0.16);
+        padding: 6px 10px;
+        border-radius: 999px;
+      }
+
+      .about {
+        color: rgba(240, 248, 255, 0.74);
+        font-size: 14px;
+        line-height: 1.55;
+        margin: 0;
+      }
+      .about code {
+        font-family: var(--mono);
+        font-size: 13px;
+        color: rgba(240, 248, 255, 0.82);
+        background: rgba(0, 0, 0, 0.18);
+        padding: 2px 6px;
+        border-radius: 8px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .stack {
+        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .chip {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: rgba(240, 248, 255, 0.74);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        background: rgba(0, 0, 0, 0.14);
+        padding: 8px 10px;
+        border-radius: 999px;
+      }
+
+      .footer {
+        margin-top: 14px;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid rgba(255, 255, 255, 0.06);
+        padding-top: 14px;
+        color: rgba(240, 248, 255, 0.55);
+        font-family: var(--mono);
+        font-size: 12px;
+      }
+      .footer a {
+        color: rgba(240, 248, 255, 0.75);
+        text-decoration: none;
+        border-bottom: 1px solid rgba(46, 242, 255, 0.28);
+      }
+      .footer a:hover {
+        border-bottom-color: rgba(176, 108, 255, 0.35);
+      }
+
+      /* interactive canvas sits behind everything */
+      canvas#fx {
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        opacity: 0.75;
+      }
+
+      /* accessibility: reduce motion */
+      @media (prefers-reduced-motion: reduce) {
+        .logo::after {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="rail"></div>
+    <canvas id="fx" aria-hidden="true"></canvas>
+    <div class="scanlines" aria-hidden="true"></div>
+
+    <main class="wrap">
+      <div class="grid">
+        <!-- Left: hero + projects -->
+        <section class="card">
+          <div class="inner">
+            <div class="brand">
+              <div class="logo" aria-hidden="true"></div>
+              <div>
+                <h1>Ryæn.com</h1>
+                <p class="sub">Remove the noise. Preserve the signal.</p>
+              </div>
+            </div>
+
+            <div class="tagline">
+              <div class="dot" aria-hidden="true"></div>
+              <span id="rotator">signal: stable</span>
+            </div>
+
+            <div class="links" role="list">
+              <!-- Replace these with your real links -->
+              <a class="link" role="listitem" href="https://x.com/xn__ryn_zla" target="_blank" rel="noreferrer">
+                <div class="left">
+                  <div class="glyph">X</div>
+                  <div class="meta">
+                    <strong>X.com</strong>
+                    <small>@xn__ryn_zla</small>
+                  </div>
+                </div>
+                <div class="arrow">↗</div>
+              </a>
+
+              <a class="link" role="listitem" href="https://www.reddit.com/user/xn__ryn_zla/" target="_blank" rel="noreferrer">
+                <div class="left">
+                  <div class="glyph">RE</div>
+                  <div class="meta">
+                    <strong>Reddit.com</strong>
+                    <small>/user/xn__ryn_zla</small>
+                  </div>
+                </div>
+                <div class="arrow">↗</div>
+              </a>
+
+              <a class="link" role="listitem" href="https://www.youtube.com/@xn__ryn_zla" target="_blank" rel="noreferrer">
+                <div class="left">
+                  <div class="glyph">YT</div>
+                  <div class="meta">
+                    <strong>YouTube.com</strong>
+                    <small>@xn__ryn_zla</small>
+                  </div>
+                </div>
+                <div class="arrow">↗</div>
+              </a>
+
+              <a class="link" role="listitem" href="https://github.com/xnrynzla" target="_blank" rel="noreferrer">
+                <div class="left">
+                  <div class="glyph">GH</div>
+                  <div class="meta">
+                    <strong>GitHub</strong>
+                    <small>/xnrynzla</small>
+                  </div>
+                </div>
+                <div class="arrow">↗</div>
+              </a>
+
+              <a class="link" role="listitem" href="https://discord.gg/dARMAbVUrP" target="_blank" rel="noreferrer">
+                <div class="left">
+                  <div class="glyph">DI</div>
+                  <div class="meta">
+                    <strong>Discord</strong>
+                    <small>xn__ryn_zla</small>
+                  </div>
+                </div>
+                <div class="arrow">↗</div>
+              </a>
+
+              <script type="text/javascript">document.write(`<a class="link" role="listitem" href="mailto:&#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#114;&#121;&#230;&#110;&#46;&#99;&#111;&#109;" rel="nofollow noopener noreferrer">`);</script>
+                <div class="left">
+                  <div class="glyph">CT</div>
+                  <div class="meta">
+                    <strong>Contact</strong>
+                    <small>
+                      <script type="text/javascript">
+                        document.write(`&#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#114;&#121;&#230;&#110;&#46;&#99;&#111;&#109;`);
+                      </script>
+                    </small>
+                  </div>
+                </div>
+                <div class="arrow">↗</div>
+              </a>
+            </div>
+          </div>
+        </section>
+
+        <!-- Right: about / stack (optional, can delete entire card) -->
+        <aside class="side">
+          <section class="card">
+            <div class="inner">
+              <div class="panelTitle">
+                <h2>overview</h2>
+                <span class="pill">¬noise</span>
+              </div>
+              <p class="about">Building <code>tools</code>, <code>systems</code>, and <code>games</code> with a bias toward clarity. Minimal surface area. Maximum signal.</p>
+
+              <div class="stack" aria-label="tags">
+                <span class="chip">TypeScript</span>
+                <span class="chip">Node</span>
+                <span class="chip">Java</span>
+                <span class="chip">UI</span>
+                <span class="chip">Infra</span>
+                <span class="chip">AI</span>
+              </div>
+            </div>
+          </section>
+
+          <!--<section class="card">
+            <div class="inner">
+              <div class="panelTitle">
+                <h2>pinned</h2>
+                <span class="pill">/links</span>
+              </div>
+
+              <a class="link" href="#" target="_blank" rel="noreferrer">
+                <div class="left">
+                  <div class="glyph">01</div>
+                  <div class="meta">
+                    <strong>Project: SignalKit</strong>
+                    <small>utilities for filtering + observability</small>
+                  </div>
+                </div>
+                <div class="arrow">↗</div>
+              </a>
+              <div style="height: 10px"></div>
+
+            </div>
+          </section>-->
+        </aside>
+      </div>
+    </main>
+
+    <script>
+      // ---------- micro copy rotator ----------
+      (function () {
+        const el = document.getElementById("rotator");
+        if (!el) return;
+        const items = ["signal: stable", "noise: false", "rx.signal", "S ≫ N", "filtered, not louder", "compiled for the future"];
+        let i = 0;
+
+        const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        if (reduce) {
+          el.textContent = items[0];
+          return;
+        }
+
+        setInterval(() => {
+          i = (i + 1) % items.length;
+          el.animate(
+            [
+              { opacity: 0, transform: "translateY(2px)" },
+              { opacity: 1, transform: "translateY(0px)" },
+            ],
+            { duration: 240, easing: "ease-out" },
+          );
+          el.textContent = items[i];
+        }, 2200);
+      })();
+
+      // ---------- lightweight cyber particle / link-lines canvas ----------
+      (function () {
+        const canvas = document.getElementById("fx");
+        if (!canvas) return;
+        const ctx = canvas.getContext("2d", { alpha: true });
+
+        const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+        let w, h, dpr;
+        function resize() {
+          dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
+          w = canvas.width = Math.floor(window.innerWidth * dpr);
+          h = canvas.height = Math.floor(window.innerHeight * dpr);
+          canvas.style.width = window.innerWidth + "px";
+          canvas.style.height = window.innerHeight + "px";
+        }
+        window.addEventListener("resize", resize);
+        resize();
+
+        // particles
+        const N = reduce ? 40 : 110;
+        const pts = Array.from({ length: N }, () => ({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          vx: (Math.random() - 0.5) * 0.28 * dpr,
+          vy: (Math.random() - 0.5) * 0.28 * dpr,
+          r: (Math.random() * 1.4 + 0.6) * dpr,
+        }));
+
+        function tick() {
+          ctx.clearRect(0, 0, w, h);
+
+          // glow haze
+          const g = ctx.createRadialGradient(w * 0.5, h * 0.55, 0, w * 0.5, h * 0.55, Math.max(w, h) * 0.55);
+          g.addColorStop(0, "rgba(46,242,255,0.08)");
+          g.addColorStop(0.45, "rgba(176,108,255,0.05)");
+          g.addColorStop(1, "rgba(0,0,0,0)");
+          ctx.fillStyle = g;
+          ctx.fillRect(0, 0, w, h);
+
+          // lines
+          for (let i = 0; i < pts.length; i++) {
+            const p = pts[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > w) p.vx *= -1;
+            if (p.y < 0 || p.y > h) p.vy *= -1;
+
+            for (let j = i + 1; j < pts.length; j++) {
+              const q = pts[j];
+              const dx = p.x - q.x,
+                dy = p.y - q.y;
+              const dist2 = dx * dx + dy * dy;
+              const max = (reduce ? 90 : 140) * dpr;
+              if (dist2 < max * max) {
+                const t = 1 - Math.sqrt(dist2) / max;
+                ctx.strokeStyle = `rgba(46,242,255,${0.1 * t})`;
+                ctx.lineWidth = 1 * dpr;
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(q.x, q.y);
+                ctx.stroke();
+              }
+            }
+          }
+
+          // points
+          for (const p of pts) {
+            ctx.fillStyle = "rgba(240,248,255,0.60)";
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          requestAnimationFrame(tick);
+        }
+        tick();
+      })();
+    </script>
+  </body>
+</html>
