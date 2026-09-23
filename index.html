@@ -4,8 +4,39 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="color-scheme" content="dark" />
-    <title>¬noise</title>
-    <meta name="description" content="Ryæn — projects and links. ¬noise." />
+    <title>Ryæn — Tools, Systems &amp; Games</title>
+    <meta name="description" content="Ryæn's portfolio: tools, systems, and games, including Glyph CMS and RogueScape. Explore projects, social profiles, and contact links." />
+    <link rel="canonical" href="https://xn--ryn-zla.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Ryæn" />
+    <meta property="og:title" content="Ryæn — Tools, Systems &amp; Games" />
+    <meta property="og:description" content="Ryæn's portfolio: tools, systems, and games, including Glyph CMS and RogueScape. Explore projects, social profiles, and contact links." />
+    <meta property="og:url" content="https://xn--ryn-zla.com/" />
+    <meta property="og:image" content="https://xn--ryn-zla.com/logo.png" />
+    <meta property="og:image:width" content="1024" />
+    <meta property="og:image:height" content="1024" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="Ryæn's profile artwork" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Ryæn — Tools, Systems &amp; Games" />
+    <meta name="twitter:description" content="Ryæn's portfolio: tools, systems, and games, including Glyph CMS and RogueScape. Explore projects, social profiles, and contact links." />
+    <meta name="twitter:image" content="https://xn--ryn-zla.com/logo.png" />
+    <meta name="twitter:image:alt" content="Ryæn's profile artwork" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "@id": "https://xn--ryn-zla.com/#person",
+        "name": "Ryæn",
+        "url": "https://xn--ryn-zla.com/",
+        "sameAs": [
+          "https://x.com/xn__ryn_zla",
+          "https://www.reddit.com/user/xn__ryn_zla/",
+          "https://www.youtube.com/@xn__ryn_zla",
+          "https://github.com/xnrynzla"
+        ]
+      }
+    </script>
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%CF%81%3C/text%3E%3C/svg%3E" />
     <style>
       :root {
@@ -42,7 +73,7 @@
         background: radial-gradient(1200px 900px at 20% 20%, rgba(176, 108, 255, 0.15), transparent 55%), radial-gradient(900px 700px at 70% 25%, rgba(46, 242, 255, 0.12), transparent 58%), radial-gradient(900px 700px at 50% 90%, rgba(69, 255, 177, 0.1), transparent 60%), linear-gradient(180deg, #04060b 0%, #05070c 60%, #03040a 100%);
         color: var(--text);
         font-family: var(--sans);
-        overflow-x: hidden;
+        overflow-wrap: anywhere;
       }
 
       /* If you want to use your banner background image, uncomment and set URL:
@@ -96,11 +127,11 @@
         width: min(1080px, 100%);
         display: grid;
         gap: 18px;
-        grid-template-columns: 1.15fr 0.85fr;
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
       }
       @media (max-width: 900px) {
         .grid {
-          grid-template-columns: 1fr;
+          grid-template-columns: minmax(0, 1fr);
         }
       }
 
@@ -145,15 +176,19 @@
         gap: 14px;
         margin-bottom: 10px;
       }
+      .brand > div:last-child {
+        min-width: 0;
+      }
 
       .logo {
+        flex: 0 0 auto;
         width: 75px;
         height: 75px;
         border-radius: 16px;
         border: 1px solid rgba(46, 242, 255, 0.22);
 
         /* 👇 set your avatar image here */
-        background-image: url("logo.png");
+        background-image: url("logo-avatar.webp");
         background-size: cover;
         background-position: center;
         background-repeat: no-repeat;
@@ -204,6 +239,7 @@
         width: fit-content;
       }
       .dot {
+        flex: 0 0 auto;
         width: 10px;
         height: 10px;
         border-radius: 99px;
@@ -220,12 +256,7 @@
         margin-top: 18px;
         display: grid;
         gap: 10px;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-      @media (max-width: 520px) {
-        .links {
-          grid-template-columns: 1fr;
-        }
+        grid-template-columns: repeat(auto-fit, minmax(min(100%, 210px), 1fr));
       }
 
       .link {
@@ -253,6 +284,10 @@
       }
       .link:active {
         transform: translateY(0px);
+      }
+      .link:focus-visible {
+        outline: 2px solid var(--a);
+        outline-offset: 3px;
       }
 
       .link .left {
@@ -282,18 +317,14 @@
       .meta strong {
         font-size: 14px;
         letter-spacing: 0.01em;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        line-height: 1.4;
       }
       .meta small {
         font-family: var(--mono);
         color: var(--muted);
         font-size: 12px;
         margin-top: 2px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        line-height: 1.5;
       }
       .arrow {
         font-family: var(--mono);
@@ -309,6 +340,7 @@
 
       .panelTitle {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
@@ -391,12 +423,39 @@
         inset: 0;
         z-index: -1;
         opacity: 0.75;
+        pointer-events: none;
+        width: 100%;
+        height: 100%;
+      }
+
+      @media (max-width: 520px) {
+        .wrap {
+          padding: 24px 12px;
+        }
+        .inner {
+          padding: 18px;
+        }
+        .brand {
+          flex-wrap: wrap;
+        }
+        .brand > div:last-child {
+          flex: 1 1 180px;
+        }
+        .sub {
+          line-height: 1.5;
+        }
       }
 
       /* accessibility: reduce motion */
       @media (prefers-reduced-motion: reduce) {
         .logo::after {
           animation: none;
+        }
+        .link {
+          transition: none;
+        }
+        .link:hover {
+          transform: none;
         }
       }
     </style>
@@ -425,9 +484,9 @@
               <span id="rotator">signal: stable</span>
             </div>
 
-            <div class="links" role="list">
+            <nav class="links" aria-label="Social profiles and contact">
               <!-- Replace these with your real links -->
-              <a class="link" role="listitem" href="https://x.com/xn__ryn_zla" target="_blank" rel="noreferrer">
+              <a class="link" href="https://x.com/xn__ryn_zla" target="_blank" rel="noreferrer">
                 <div class="left">
                   <div class="glyph">X</div>
                   <div class="meta">
@@ -438,7 +497,7 @@
                 <div class="arrow">↗</div>
               </a>
 
-              <a class="link" role="listitem" href="https://www.reddit.com/user/xn__ryn_zla/" target="_blank" rel="noreferrer">
+              <a class="link" href="https://www.reddit.com/user/xn__ryn_zla/" target="_blank" rel="noreferrer">
                 <div class="left">
                   <div class="glyph">RE</div>
                   <div class="meta">
@@ -449,7 +508,7 @@
                 <div class="arrow">↗</div>
               </a>
 
-              <a class="link" role="listitem" href="https://www.youtube.com/@xn__ryn_zla" target="_blank" rel="noreferrer">
+              <a class="link" href="https://www.youtube.com/@xn__ryn_zla" target="_blank" rel="noreferrer">
                 <div class="left">
                   <div class="glyph">YT</div>
                   <div class="meta">
@@ -460,7 +519,7 @@
                 <div class="arrow">↗</div>
               </a>
 
-              <a class="link" role="listitem" href="https://github.com/xnrynzla" target="_blank" rel="noreferrer">
+              <a class="link" href="https://github.com/xnrynzla" target="_blank" rel="noreferrer">
                 <div class="left">
                   <div class="glyph">GH</div>
                   <div class="meta">
@@ -471,7 +530,7 @@
                 <div class="arrow">↗</div>
               </a>
 
-              <a class="link" role="listitem" href="https://discord.gg/dARMAbVUrP" target="_blank" rel="noreferrer">
+              <a class="link" href="https://discord.gg/dARMAbVUrP" target="_blank" rel="noreferrer">
                 <div class="left">
                   <div class="glyph">DI</div>
                   <div class="meta">
@@ -482,21 +541,19 @@
                 <div class="arrow">↗</div>
               </a>
 
-              <script type="text/javascript">document.write(`<a class="link" role="listitem" href="mailto:&#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#114;&#121;&#230;&#110;&#46;&#99;&#111;&#109;" rel="nofollow noopener noreferrer">`);</script>
+              <a class="link" href="mailto:&#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#114;&#121;&#230;&#110;&#46;&#99;&#111;&#109;" rel="nofollow noopener noreferrer">
                 <div class="left">
                   <div class="glyph">CT</div>
                   <div class="meta">
                     <strong>Contact</strong>
                     <small>
-                      <script type="text/javascript">
-                        document.write(`&#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#114;&#121;&#230;&#110;&#46;&#99;&#111;&#109;`);
-                      </script>
+                      &#99;&#111;&#110;&#116;&#97;&#99;&#116;&#64;&#114;&#121;&#230;&#110;&#46;&#99;&#111;&#109;
                     </small>
                   </div>
                 </div>
                 <div class="arrow">↗</div>
               </a>
-            </div>
+            </nav>
           </div>
         </section>
 
@@ -571,7 +628,8 @@
           return;
         }
 
-        setInterval(() => {
+        let timer;
+        function rotate() {
           i = (i + 1) % items.length;
           el.animate(
             [
@@ -581,7 +639,13 @@
             { duration: 240, easing: "ease-out" },
           );
           el.textContent = items[i];
-        }, 2200);
+        }
+        function syncTimer() {
+          clearInterval(timer);
+          if (!document.hidden) timer = setInterval(rotate, 2200);
+        }
+        document.addEventListener("visibilitychange", syncTimer);
+        syncTimer();
       })();
 
       // ---------- lightweight cyber particle / link-lines canvas ----------
@@ -589,23 +653,37 @@
         const canvas = document.getElementById("fx");
         if (!canvas) return;
         const ctx = canvas.getContext("2d", { alpha: true });
+        if (!ctx) return;
 
         const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-        let w, h, dpr;
+        let w, h, dpr, haze;
+        let frameId;
+        let lastFrame;
+        const frameInterval = 1000 / 60;
+        let pts = [];
         function resize() {
+          const oldW = w;
+          const oldH = h;
           dpr = Math.max(1, Math.min(2, window.devicePixelRatio || 1));
-          w = canvas.width = Math.floor(window.innerWidth * dpr);
+          w = canvas.width = Math.floor(document.documentElement.clientWidth * dpr);
           h = canvas.height = Math.floor(window.innerHeight * dpr);
-          canvas.style.width = window.innerWidth + "px";
-          canvas.style.height = window.innerHeight + "px";
+          haze = ctx.createRadialGradient(w * 0.5, h * 0.55, 0, w * 0.5, h * 0.55, Math.max(w, h) * 0.55);
+          haze.addColorStop(0, "rgba(46,242,255,0.08)");
+          haze.addColorStop(0.45, "rgba(176,108,255,0.05)");
+          haze.addColorStop(1, "rgba(0,0,0,0)");
+          for (const p of pts) {
+            p.x *= w / oldW;
+            p.y *= h / oldH;
+          }
+          if (reduce && pts.length) tick();
         }
         window.addEventListener("resize", resize);
         resize();
 
         // particles
         const N = reduce ? 40 : 110;
-        const pts = Array.from({ length: N }, () => ({
+        pts = Array.from({ length: N }, () => ({
           x: Math.random() * w,
           y: Math.random() * h,
           vx: (Math.random() - 0.5) * 0.28 * dpr,
@@ -613,22 +691,25 @@
           r: (Math.random() * 1.4 + 0.6) * dpr,
         }));
 
-        function tick() {
+        function tick(now) {
+          if (!reduce && document.hidden) return;
+          if (!reduce) frameId = requestAnimationFrame(tick);
+          const elapsed = lastFrame === undefined ? frameInterval : now - lastFrame;
+          if (!reduce && elapsed < frameInterval) return;
+          // Bound catch-up after stalls; retain the original speed at 60 Hz.
+          const step = reduce ? 1 : Math.min(elapsed / frameInterval, 3);
+          lastFrame = now;
           ctx.clearRect(0, 0, w, h);
 
           // glow haze
-          const g = ctx.createRadialGradient(w * 0.5, h * 0.55, 0, w * 0.5, h * 0.55, Math.max(w, h) * 0.55);
-          g.addColorStop(0, "rgba(46,242,255,0.08)");
-          g.addColorStop(0.45, "rgba(176,108,255,0.05)");
-          g.addColorStop(1, "rgba(0,0,0,0)");
-          ctx.fillStyle = g;
+          ctx.fillStyle = haze;
           ctx.fillRect(0, 0, w, h);
 
           // lines
           for (let i = 0; i < pts.length; i++) {
             const p = pts[i];
-            p.x += p.vx;
-            p.y += p.vy;
+            p.x += p.vx * step;
+            p.y += p.vy * step;
             if (p.x < 0 || p.x > w) p.vx *= -1;
             if (p.y < 0 || p.y > h) p.vy *= -1;
 
@@ -658,9 +739,13 @@
             ctx.fill();
           }
 
-          requestAnimationFrame(tick);
         }
-        tick();
+        document.addEventListener("visibilitychange", () => {
+          cancelAnimationFrame(frameId);
+          lastFrame = undefined;
+          if (!document.hidden && !reduce) tick(performance.now());
+        });
+        tick(performance.now());
       })();
     </script>
   </body>
